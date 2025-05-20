@@ -5,8 +5,8 @@
     <title>Redirigiendo...</title>
     <script>
       // Redirigir a la página principal
-      sessionStorage.redirect = window.location.href.split('/').slice(3).join('/');
-      window.location.href = '/Ethics-IAS/';
+      sessionStorage.redirect = window.location.pathname;
+      window.location.href = './';
     </script>
   </head>
   <body>
