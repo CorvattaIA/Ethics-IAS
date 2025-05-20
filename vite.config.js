@@ -238,6 +238,26 @@ const compressionOptions = {
 };
 
 export default defineConfig(({ mode }) => ({
+  // Configuración base para GitHub Pages
+  base: process.env.NODE_ENV === 'production' ? '/Ethics-IAS/' : '/',
+  define: {
+    'import.meta.env.BASE_URL': JSON.stringify(process.env.NODE_ENV === 'production' ? '/Ethics-IAS/' : '/'),
+  },
+  // Configuración para manejar rutas en producción
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: false,
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router-dom'],
+          framer: ['framer-motion'],
+          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-slot'],
+        },
+      },
+    },
+  },
   plugins: [
     react({
       // Usar SWC para compilación más rápida

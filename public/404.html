@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Redirigiendo...</title>
+    <script>
+      // Redirigir a la página principal
+      sessionStorage.redirect = window.location.href.split('/').slice(3).join('/');
+      window.location.href = '/Ethics-IAS/';
+    </script>
+  </head>
+  <body>
+    <p>Redirigiendo a la página principal...</p>
+  </body>
+</html>
