@@ -1,37 +1,209 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ethics IAS - Página de prueba</title>
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#231F31" />
+    <meta name="description" content="Horizon Ética - Consultoría en ética para inteligencia artificial. Ayudamos a empresas a implementar IA de manera responsable y ética." />
+    <meta name="author" content="Horizon Ética" />
+    <meta name="generator" content="React + Vite" />
+    <link rel="sitemap" type="application/xml" href="/Ethics-IAS/sitemap.xml" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./site.webmanifest" />
+    
+    <!-- Preload de fuentes críticas -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Preload de recursos críticos -->
+    
+    <link rel="preload" href="data:text/jsx;base64,aW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0JzsNCmltcG9ydCBSZWFjdERPTSBmcm9tICdyZWFjdC1kb20vY2xpZW50JzsNCmltcG9ydCB7IEhlbG1ldFByb3ZpZGVyIH0gZnJvbSAncmVhY3QtaGVsbWV0LWFzeW5jJzsNCmltcG9ydCB7IEhhc2hSb3V0ZXIgfSBmcm9tICdyZWFjdC1yb3V0ZXItZG9tJzsNCmltcG9ydCBBcHAgZnJvbSAnQC9BcHAnOw0KaW1wb3J0ICdAL2luZGV4LmNzcyc7DQppbXBvcnQgeyBpbml0U2VudHJ5IH0gZnJvbSAnQC9saWIvbW9uaXRvcmluZyc7DQoNCi8vIEluaWNpYWxpemFyIG1vbml0b3Jlbw0KaW5pdFNlbnRyeSgpOw0KDQovLyBDcmVhciB1biBjb21wb25lbnRlIGRlIGzDrW1pdGUgZGUgZXJyb3INCmNsYXNzIEVycm9yQm91bmRhcnkgZXh0ZW5kcyBSZWFjdC5Db21wb25lbnQgew0KICBjb25zdHJ1Y3Rvcihwcm9wcykgew0KICAgIHN1cGVyKHByb3BzKTsNCiAgICB0aGlzLnN0YXRlID0geyBoYXNFcnJvcjogZmFsc2UgfTsNCiAgfQ0KDQogIHN0YXRpYyBnZXREZXJpdmVkU3RhdGVGcm9tRXJyb3IoZXJyb3IpIHsNCiAgICByZXR1cm4geyBoYXNFcnJvcjogdHJ1ZSB9Ow0KICB9DQoNCiAgY29tcG9uZW50RGlkQ2F0Y2goZXJyb3IsIGVycm9ySW5mbykgew0KICAgIC8vIFJlZ2lzdHJhciBlbCBlcnJvciBlbiBTZW50cnkNCiAgICBjb25zb2xlLmVycm9yKCdFcnJvciBjYXB0dXJhZG8gcG9yIGVsIGzDrW1pdGUgZGUgZXJyb3I6JywgZXJyb3IsIGVycm9ySW5mbyk7DQogICAgaWYgKHByb2Nlc3MuZW52Lk5PREVfRU5WID09PSAncHJvZHVjdGlvbicpIHsNCiAgICAgIGNvbnN0IHsgbG9nRXJyb3IgfSA9IHJlcXVpcmUoJ0AvbGliL21vbml0b3JpbmcnKTsNCiAgICAgIGxvZ0Vycm9yKGVycm9yLCB7IGVycm9ySW5mbyB9KTsNCiAgICB9DQogIH0NCg0KICByZW5kZXIoKSB7DQogICAgaWYgKHRoaXMuc3RhdGUuaGFzRXJyb3IpIHsNCiAgICAgIHJldHVybiAoDQogICAgICAgIDxkaXYgY2xhc3NOYW1lPSJtaW4taC1zY3JlZW4gZmxleCBpdGVtcy1jZW50ZXIganVzdGlmeS1jZW50ZXIgYmctYnJhbmQtZGVlcC1pbmRpZ28gdGV4dC13aGl0ZSBwLTQiPg0KICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPSJ0ZXh0LWNlbnRlciI+DQogICAgICAgICAgICA8aDEgY2xhc3NOYW1lPSJ0ZXh0LTJ4bCBmb250LWJvbGQgbWItNCI+QWxnbyBzYWxpw7MgbWFsPC9oMT4NCiAgICAgICAgICAgIDxwIGNsYXNzTmFtZT0ibWItNiI+TG8gc2VudGltb3MsIGhhIG9jdXJyaWRvIHVuIGVycm9yIGluZXNwZXJhZG8uPC9wPg0KICAgICAgICAgICAgPGJ1dHRvbg0KICAgICAgICAgICAgICBjbGFzc05hbWU9InB4LTQgcHktMiBiZy1icmFuZC12aWJyYW50LXJlZCB0ZXh0LXdoaXRlIHJvdW5kZWQtbWQgaG92ZXI6Ymctb3BhY2l0eS05MCB0cmFuc2l0aW9uLWNvbG9ycyINCiAgICAgICAgICAgICAgb25DbGljaz17KCkgPT4gd2luZG93LmxvY2F0aW9uLnJlbG9hZCgpfQ0KICAgICAgICAgICAgPg0KICAgICAgICAgICAgICBSZWNhcmdhciBsYSBww6FnaW5hDQogICAgICAgICAgICA8L2J1dHRvbj4NCiAgICAgICAgICA8L2Rpdj4NCiAgICAgICAgPC9kaXY+DQogICAgICApOw0KICAgIH0NCg0KICAgIHJldHVybiB0aGlzLnByb3BzLmNoaWxkcmVuOw0KICB9DQp9DQoNCi8vIFJlbmRlcml6YXIgbGEgYXBsaWNhY2nDs24NClJlYWN0RE9NLmNyZWF0ZVJvb3QoZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3Jvb3QnKSkucmVuZGVyKA0KICA8UmVhY3QuU3RyaWN0TW9kZT4NCiAgICA8SGVsbWV0UHJvdmlkZXI+DQogICAgICA8SGFzaFJvdXRlcj4NCiAgICAgICAgPEVycm9yQm91bmRhcnk+DQogICAgICAgICAgPEFwcCAvPg0KICAgICAgICA8L0Vycm9yQm91bmRhcnk+DQogICAgICA8L0hhc2hSb3V0ZXI+DQogICAgPC9IZWxtZXRQcm92aWRlcj4NCiAgPC9SZWFjdC5TdHJpY3RNb2RlPg0KKTsNCg==" as="script" />
+    
+    <!-- Título por defecto -->
+    <title>Horizon Ética - Consultoría en ética para IA</title>
+    
+    <!-- Estilos críticos en línea -->
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            line-height: 1.6;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-            color: #333;
-        }
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-        }
+      /* Estilos críticos iniciales */
+      html { scroll-behavior: smooth; }
+      body { margin: 0; font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+      #root { min-height: 100vh; display: flex; flex-direction: column; }
+      .loading-spinner {
+        width: 50px;
+        height: 50px;
+        border: 5px solid rgba(255, 255, 255, 0.1);
+        border-radius: 50%;
+        border-top-color: #4F46E5;
+        animation: spin 1s ease-in-out infinite;
+        margin: 2rem auto;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
     </style>
-</head>
-<body>
-    <div class="container">
-        <h1>¡Bienvenido a Ethics IAS!</h1>
-        <p>Esta es una página de prueba para verificar que GitHub Pages está funcionando correctamente.</p>
-        <p>Si puedes ver este mensaje, significa que el despliegue básico está funcionando.</p>
-        <p>Próximamente estará disponible el sitio completo.</p>
+    
+    <!-- Preload de estilos -->
+    
+    <script type="module" crossorigin src="/Ethics-IAS/assets/index-3c477797.js"></script>
+    <link rel="modulepreload" crossorigin href="/Ethics-IAS/assets/vendor-5e7fcc4f.js">
+    <link rel="modulepreload" crossorigin href="/Ethics-IAS/assets/vendor-ui-408179be.js">
+    <link rel="modulepreload" crossorigin href="/Ethics-IAS/assets/vendor-react-51ceb2e1.js">
+    <link rel="stylesheet" href="/Ethics-IAS/assets/index-c332b3e0.css">
+    <script type="module">
+window.onerror = (message, source, lineno, colno, errorObj) => {
+	const errorDetails = errorObj ? JSON.stringify({
+		name: errorObj.name,
+		message: errorObj.message,
+		stack: errorObj.stack,
+		source,
+		lineno,
+		colno,
+	}) : null;
+
+	window.parent.postMessage({
+		type: 'horizons-runtime-error',
+		message,
+		error: errorDetails
+	}, '*');
+};
+</script>
+    <script type="module">
+const observer = new MutationObserver((mutations) => {
+	for (const mutation of mutations) {
+		for (const addedNode of mutation.addedNodes) {
+			if (
+				addedNode.nodeType === Node.ELEMENT_NODE &&
+				(
+					addedNode.tagName?.toLowerCase() === 'vite-error-overlay' ||
+					addedNode.classList?.contains('backdrop')
+				)
+			) {
+				handleViteOverlay(addedNode);
+			}
+		}
+	}
+});
+
+observer.observe(document.documentElement, {
+	childList: true,
+	subtree: true
+});
+
+function handleViteOverlay(node) {
+	if (!node.shadowRoot) {
+		return;
+	}
+
+	const backdrop = node.shadowRoot.querySelector('.backdrop');
+
+	if (backdrop) {
+		const overlayHtml = backdrop.outerHTML;
+		const parser = new DOMParser();
+		const doc = parser.parseFromString(overlayHtml, 'text/html');
+		const messageBodyElement = doc.querySelector('.message-body');
+		const fileElement = doc.querySelector('.file');
+		const messageText = messageBodyElement ? messageBodyElement.textContent.trim() : '';
+		const fileText = fileElement ? fileElement.textContent.trim() : '';
+		const error = messageText + (fileText ? ' File:' + fileText : '');
+
+		window.parent.postMessage({
+			type: 'horizons-vite-error',
+			error,
+		}, '*');
+	}
+}
+</script>
+    <script type="module">
+const originalConsoleError = console.error;
+console.error = function(...args) {
+	originalConsoleError.apply(console, args);
+
+	let errorString = '';
+
+	for (let i = 0; i < args.length; i++) {
+		const arg = args[i];
+		if (arg instanceof Error) {
+			errorString = arg.stack || `${arg.name}: ${arg.message}`;
+			break;
+		}
+	}
+
+	if (!errorString) {
+		errorString = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : String(arg)).join(' ');
+	}
+
+	window.parent.postMessage({
+		type: 'horizons-console-error',
+		error: errorString
+	}, '*');
+};
+</script>
+    <script type="module">
+const originalFetch = window.fetch;
+
+window.fetch = function(...args) {
+	const url = args[0] instanceof Request ? args[0].url : args[0];
+
+	// Skip WebSocket URLs
+	if (url.startsWith('ws:') || url.startsWith('wss:')) {
+		return originalFetch.apply(this, args);
+	}
+
+	return originalFetch.apply(this, args)
+		.then(async response => {
+			const contentType = response.headers.get('Content-Type') || '';
+
+			// Exclude HTML document responses
+			const isDocumentResponse =
+				contentType.includes('text/html') ||
+				contentType.includes('application/xhtml+xml');
+
+			if (!response.ok && !isDocumentResponse) {
+					const responseClone = response.clone();
+					const errorFromRes = await responseClone.text();
+					const requestUrl = response.url;
+					console.error(`Fetch error from ${requestUrl}: ${errorFromRes}`);
+			}
+
+			return response;
+		})
+		.catch(error => {
+			if (!url.match(/.html?$/i)) {
+				console.error(error);
+			}
+
+			throw error;
+		});
+};
+</script>
+  <link rel="manifest" href="/Ethics-IAS/manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="/Ethics-IAS/registerSW.js"></script></head>
+  <body>
+    <noscript>
+      <div style="text-align: center; padding: 2rem; background: #f8f9fa; color: #212529;">
+        <h1>JavaScript está deshabilitado</h1>
+        <p>Esta aplicación requiere JavaScript para funcionar correctamente. Por favor, habilita JavaScript en tu navegador.</p>
+      </div>
+    </noscript>
+    
+    <div id="root">
+      <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background: #231F31;">
+        <div class="loading-spinner"></div>
+      </div>
     </div>
-</body>
+    
+    
+    
+    <!-- Google Analytics (opcional, descomenta y configura con tu ID) -->
+    <!--
+    <script async src="https://www.googletagmanager.com/gtag/js?id=TU-ID-DE-SEGUIMIENTO"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'TU-ID-DE-SEGUIMIENTO');
+    </script>
+    -->
+  </body>
 </html>
