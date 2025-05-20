@@ -1,351 +1,128 @@
-import path from 'node:path';
 import { defineConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
+import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 import compression from 'vite-plugin-compression';
-import { createLogger } from 'vite';
+import path from 'path';
+import tailwindcss from 'tailwindcss';
+import autoprefixer from 'autoprefixer';
 
-// Configuración de PWA
-const pwaOptions = {
-  registerType: 'autoUpdate',
-  includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
-  manifest: {
-    name: 'Horizon Ética',
-    short_name: 'Horizon',
-    description: 'Consultoría en ética para inteligencia artificial',
-    theme_color: '#231F31',
-    background_color: '#231F31',
-    display: 'standalone',
-    icons: [
-      {
-        src: 'pwa-192x192.png',
-        sizes: '192x192',
-        type: 'image/png',
-      },
-      {
-        src: 'pwa-512x512.png',
-        sizes: '512x512',
-        type: 'image/png',
-      },
+// https://vitejs.dev/config/
+export default defineConfig(({ mode }) => {
+  const isProduction = mode === 'production';
+  const basePath = isProduction ? '/Ethics-IAS/' : '/';
+
+  return {
+    base: basePath,
+    define: {
+      'import.meta.env.BASE_URL': JSON.stringify(basePath),
+      'process.env.NODE_ENV': JSON.stringify(mode)
+    },
+    plugins: [
+      react({
+        jsxImportSource: '@emotion/react',
+        babel: {
+          plugins: ['@emotion/babel-plugin'],
+        },
+      }),
+      VitePWA({
+        registerType: 'autoUpdate',
+        includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+        manifest: {
+          name: 'Ethics IAS',
+          short_name: 'EthicsIAS',
+          description: 'Ethical AI Consulting Services',
+          theme_color: '#ffffff',
+          icons: [
+            {
+              src: 'pwa-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: 'pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+            },
+          ],
+        },
+      }),
+      compression({
+        ext: '.gz',
+        algorithm: 'gzip',
+        threshold: 10240,
+      }),
     ],
-  },
-  workbox: {
-    globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
-    runtimeCaching: [
-      {
-        urlPattern: /^https:\/\/fonts\.googleapis\.com\/.*/i,
-        handler: 'CacheFirst',
-        options: {
-          cacheName: 'google-fonts-cache',
-          expiration: {
-            maxEntries: 10,
-            maxAgeSeconds: 60 * 60 * 24 * 365, // 1 año
+    build: {
+      target: 'esnext',
+      minify: isProduction ? 'terser' : false,
+      sourcemap: !isProduction,
+      cssCodeSplit: true,
+      reportCompressedSize: false,
+      chunkSizeWarningLimit: 1600,
+      terserOptions: isProduction ? {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+          pure: ['console.log', 'console.info'],
+        },
+        format: {
+          comments: false,
+        },
+      } : {},
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            react: ['react', 'react-dom', 'react-router-dom', 'react-helmet-async'],
+            framer: ['framer-motion'],
+            ui: ['clsx', 'tailwind-merge', 'tailwindcss-animate'],
+            vendor: ['uuid', 'prop-types'],
           },
-          cacheableResponse: {
-            statuses: [0, 200],
-          },
+          chunkFileNames: isProduction ? 'assets/[name]-[hash].js' : 'assets/[name].js',
+          assetFileNames: 'assets/[name]-[hash][extname]',
+          entryFileNames: 'assets/[name]-[hash].js',
         },
       },
-    ],
-  },
-};
-
-const configHorizonsViteErrorHandler = `
-const observer = new MutationObserver((mutations) => {
-	for (const mutation of mutations) {
-		for (const addedNode of mutation.addedNodes) {
-			if (
-				addedNode.nodeType === Node.ELEMENT_NODE &&
-				(
-					addedNode.tagName?.toLowerCase() === 'vite-error-overlay' ||
-					addedNode.classList?.contains('backdrop')
-				)
-			) {
-				handleViteOverlay(addedNode);
-			}
-		}
-	}
+    },
+    server: {
+      port: 5173,
+      strictPort: true,
+      open: true,
+      host: true,
+    },
+    preview: {
+      port: 4173,
+      strictPort: true,
+    },
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+      },
+    },
+    css: {
+      modules: {
+        localsConvention: 'camelCaseOnly',
+      },
+      postcss: {
+        plugins: [
+          tailwindcss(),
+          autoprefixer(),
+        ],
+      },
+    },
+    optimizeDeps: {
+      include: [
+        'react',
+        'react-dom',
+        'react-router-dom',
+        'framer-motion',
+        '@radix-ui/react-dialog',
+        '@radix-ui/react-toast',
+        '@emotion/react',
+        '@emotion/styled',
+      ],
+      esbuildOptions: {
+        target: 'es2020',
+      },
+    },
+  };
 });
-
-observer.observe(document.documentElement, {
-	childList: true,
-	subtree: true
-});
-
-function handleViteOverlay(node) {
-	if (!node.shadowRoot) {
-		return;
-	}
-
-	const backdrop = node.shadowRoot.querySelector('.backdrop');
-
-	if (backdrop) {
-		const overlayHtml = backdrop.outerHTML;
-		const parser = new DOMParser();
-		const doc = parser.parseFromString(overlayHtml, 'text/html');
-		const messageBodyElement = doc.querySelector('.message-body');
-		const fileElement = doc.querySelector('.file');
-		const messageText = messageBodyElement ? messageBodyElement.textContent.trim() : '';
-		const fileText = fileElement ? fileElement.textContent.trim() : '';
-		const error = messageText + (fileText ? ' File:' + fileText : '');
-
-		window.parent.postMessage({
-			type: 'horizons-vite-error',
-			error,
-		}, '*');
-	}
-}
-`;
-
-const configHorizonsRuntimeErrorHandler = `
-window.onerror = (message, source, lineno, colno, errorObj) => {
-	const errorDetails = errorObj ? JSON.stringify({
-		name: errorObj.name,
-		message: errorObj.message,
-		stack: errorObj.stack,
-		source,
-		lineno,
-		colno,
-	}) : null;
-
-	window.parent.postMessage({
-		type: 'horizons-runtime-error',
-		message,
-		error: errorDetails
-	}, '*');
-};
-`;
-
-const configHorizonsConsoleErrroHandler = `
-const originalConsoleError = console.error;
-console.error = function(...args) {
-	originalConsoleError.apply(console, args);
-
-	let errorString = '';
-
-	for (let i = 0; i < args.length; i++) {
-		const arg = args[i];
-		if (arg instanceof Error) {
-			errorString = arg.stack || \`\${arg.name}: \${arg.message}\`;
-			break;
-		}
-	}
-
-	if (!errorString) {
-		errorString = args.map(arg => typeof arg === 'object' ? JSON.stringify(arg) : String(arg)).join(' ');
-	}
-
-	window.parent.postMessage({
-		type: 'horizons-console-error',
-		error: errorString
-	}, '*');
-};
-`;
-
-const configWindowFetchMonkeyPatch = `
-const originalFetch = window.fetch;
-
-window.fetch = function(...args) {
-	const url = args[0] instanceof Request ? args[0].url : args[0];
-
-	// Skip WebSocket URLs
-	if (url.startsWith('ws:') || url.startsWith('wss:')) {
-		return originalFetch.apply(this, args);
-	}
-
-	return originalFetch.apply(this, args)
-		.then(async response => {
-			const contentType = response.headers.get('Content-Type') || '';
-
-			// Exclude HTML document responses
-			const isDocumentResponse =
-				contentType.includes('text/html') ||
-				contentType.includes('application/xhtml+xml');
-
-			if (!response.ok && !isDocumentResponse) {
-					const responseClone = response.clone();
-					const errorFromRes = await responseClone.text();
-					const requestUrl = response.url;
-					console.error(\`Fetch error from \${requestUrl}: \${errorFromRes}\`);
-			}
-
-			return response;
-		})
-		.catch(error => {
-			if (!url.match(/\.html?$/i)) {
-				console.error(error);
-			}
-
-			throw error;
-		});
-};
-`;
-
-const addTransformIndexHtml = {
-	name: 'add-transform-index-html',
-	transformIndexHtml(html) {
-		return {
-			html,
-			tags: [
-				{
-					tag: 'script',
-					attrs: { type: 'module' },
-					children: configHorizonsRuntimeErrorHandler,
-					injectTo: 'head',
-				},
-				{
-					tag: 'script',
-					attrs: { type: 'module' },
-					children: configHorizonsViteErrorHandler,
-					injectTo: 'head',
-				},
-				{
-					tag: 'script',
-					attrs: {type: 'module'},
-					children: configHorizonsConsoleErrroHandler,
-					injectTo: 'head',
-				},
-				{
-					tag: 'script',
-					attrs: { type: 'module' },
-					children: configWindowFetchMonkeyPatch,
-					injectTo: 'head',
-				},
-			],
-		};
-	},
-};
-
-console.warn = () => {};
-
-const logger = createLogger()
-const loggerError = logger.error
-
-logger.error = (msg, options) => {
-	if (options?.error?.toString().includes('CssSyntaxError: [postcss]')) {
-		return;
-	}
-
-	loggerError(msg, options);
-}
-
-// Configuración de compresión
-const compressionOptions = {
-  ext: '.gz',
-  algorithm: 'gzip',
-  threshold: 10240, // Comprimir archivos mayores a 10KB
-  deleteOriginFile: false,
-};
-
-export default defineConfig(({ mode }) => ({
-  // Configuración base para GitHub Pages
-  base: process.env.NODE_ENV === 'production' ? '/Ethics-IAS/' : '/',
-  define: {
-    'import.meta.env.BASE_URL': JSON.stringify(process.env.NODE_ENV === 'production' ? '/Ethics-IAS/' : '/'),
-  },
-  // Configuración para manejar rutas en producción
-  build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
-    sourcemap: false,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          react: ['react', 'react-dom', 'react-router-dom'],
-          framer: ['framer-motion'],
-          ui: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-slot'],
-        },
-      },
-    },
-  },
-  plugins: [
-    react({
-      // Usar SWC para compilación más rápida
-      jsxImportSource: '@emotion/react',
-      babel: {
-        plugins: ['@emotion/babel-plugin'],
-      },
-    }),
-    VitePWA(mode === 'production' ? pwaOptions : false), // Solo habilitar PWA en producción
-    compression(compressionOptions),
-    addTransformIndexHtml,
-  ],
-  build: {
-    target: 'esnext',
-    minify: 'terser',
-    sourcemap: mode === 'development',
-    cssCodeSplit: true,
-    terserOptions: {
-      compress: {
-        drop_console: mode === 'production',
-        drop_debugger: mode === 'production',
-      },
-    },
-    rollupOptions: {
-      output: {
-        manualChunks: (id) => {
-          if (id.includes('node_modules')) {
-            if (id.includes('react') || id.includes('react-dom') || id.includes('react-router-dom')) {
-              return 'vendor-react';
-            }
-            if (id.includes('@radix-ui') || id.includes('framer-motion')) {
-              return 'vendor-ui';
-            }
-            return 'vendor';
-          }
-        },
-      },
-    },
-    chunkSizeWarningLimit: 1000,
-  },
-  server: {
-    cors: true,
-    headers: {
-      'Cross-Origin-Opener-Policy': 'same-origin',
-      'Cross-Origin-Embedder-Policy': 'require-corp',
-    },
-    port: 5173,
-    strictPort: true,
-    open: true,
-    host: true,
-  },
-  preview: {
-    port: 4173,
-    strictPort: true,
-  },
-  resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-    alias: [
-      {
-        find: '@',
-        replacement: path.resolve(__dirname, 'src'),
-      },
-    ],
-  },
-  define: {
-    'process.env': {},
-    __APP_VERSION__: JSON.stringify(process.env.npm_package_version || '1.0.0'),
-  },
-  css: {
-    devSourcemap: mode === 'development',
-    modules: {
-      localsConvention: 'camelCaseOnly',
-    },
-  },
-  optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      'react-router-dom',
-      'framer-motion',
-      '@radix-ui/react-dialog',
-      '@radix-ui/react-toast',
-    ],
-    esbuildOptions: {
-      // Soluciona problemas con paquetes que esperan globalThis
-      define: {
-        global: 'globalThis',
-      },
-    },
-  },
-}));
