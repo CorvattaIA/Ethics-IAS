@@ -9,8 +9,8 @@ import autoprefixer from 'autoprefixer';
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
 const isProduction = mode === 'production';
- // const basePath = isProduction ? '/Ethics-IAS/' : '/';
-const basePath = "/";
+  const basePath = isProduction ? '/Ethics-IAS/' : '/';
+//const basePath = "/";
   return {
     base: basePath,
     define: {
