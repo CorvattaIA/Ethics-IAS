@@ -1,0 +1,135 @@
+@tailwind base;
+    @tailwind components;
+    @tailwind utilities;
+
+    @layer base {
+      :root {
+        --background: 248 13% 10%; /* #231F31 Deep Indigo */
+        --foreground: 0 0% 94%; /* #F0F0F0 Light Text */
+
+        --card: 248 13% 10%;
+        --card-foreground: 0 0% 94%;
+
+        --popover: 248 13% 10%;
+        --popover-foreground: 0 0% 94%;
+
+        --primary: 2 86% 54%; /* #EE2A24 Vibrant Red */
+        --primary-foreground: 0 0% 94%;
+
+        --secondary: 13 91% 56%; /* #F55528 Orange Red */
+        --secondary-foreground: 0 0% 94%;
+
+        --muted: 248 13% 20%;
+        --muted-foreground: 0 0% 60%;
+
+        --accent: 38 96% 54%; /* #FBAF18 Warm Orange */
+        --accent-foreground: 248 13% 10%;
+
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 0 0% 98%;
+
+        --border: 248 13% 25%;
+        --input: 248 13% 25%;
+        --ring: 217 91% 60%; /* focus-blue */
+
+        --radius: 0.5rem; /* 8px */
+      }
+
+      .dark {
+        /* You can define dark mode specific variables here if needed,
+           but the base is already dark. */
+      }
+    }
+
+    @layer base {
+      * {
+        @apply border-border;
+      }
+      body {
+        @apply bg-background text-foreground;
+        font-family: 'Inter', sans-serif;
+        font-size: theme('fontSize.base-mobile');
+        line-height: 1.5;
+      }
+      @screen md {
+        body {
+          font-size: theme('fontSize.base-desktop');
+        }
+      }
+
+      /* Accessibility: Visible focus states */
+      *:focus-visible {
+        @apply outline-none ring-2 ring-focus-blue ring-offset-2 ring-offset-background;
+      }
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: hsl(var(--background) / 0.5);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: hsl(var(--primary) / 0.7);
+      border-radius: 10px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: hsl(var(--primary));
+    }
+
+    .cross-fade-enter {
+      opacity: 0;
+    }
+    .cross-fade-enter-active {
+      opacity: 1;
+      transition: opacity 400ms ease-in-out;
+    }
+    .cross-fade-exit {
+      opacity: 1;
+    }
+    .cross-fade-exit-active {
+      opacity: 0;
+      transition: opacity 400ms ease-in-out;
+    }
+
+    .slide-in-right-enter {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    .slide-in-right-enter-active {
+      transform: translateX(0%);
+      opacity: 1;
+      transition: transform 300ms ease-out, opacity 300ms ease-out;
+    }
+    .slide-in-right-exit {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+    .slide-in-right-exit-active {
+      transform: translateX(-100%);
+      opacity: 0;
+      transition: transform 300ms ease-in, opacity 300ms ease-in;
+    }
+
+    .slide-in-left-enter {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    .slide-in-left-enter-active {
+      transform: translateX(0%);
+      opacity: 1;
+      transition: transform 300ms ease-out, opacity 300ms ease-out;
+    }
+    .slide-in-left-exit {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+    .slide-in-left-exit-active {
+      transform: translateX(100%);
+      opacity: 0;
+      transition: transform 300ms ease-in, opacity 300ms ease-in;
+    }
